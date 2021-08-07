@@ -60,7 +60,7 @@ func DBConfigInit() (string, string) {
 	log.Println("db connecting ...", dbName, dbHost)
 
 	// db dsn
-	dsn := dbUser + ":" + dbPasswd + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := dbUser + ":" + dbPasswd + "@tcp(" + dbHost + ":" + dbPort + ")/?charset=utf8mb4&parseTime=True&loc=Local"
 	return dsn, dbName
 }
 
