@@ -3,6 +3,7 @@ package route
 import (
 	"focusapi/controller"
 	"focusapi/middleware"
+	"log"
 	"net/http"
 	"time"
 
@@ -12,7 +13,8 @@ import (
 )
 
 const (
-	TIME_DURATION = 10
+	TIME_DURATION   = 10
+	INTERNAL_SERVER = "http://127.0.0.1:22520/"
 )
 
 func DefinitionRoute(router *gin.Engine) {
@@ -25,6 +27,8 @@ func DefinitionRoute(router *gin.Engine) {
 	router.Use(middleware.TimeoutHandler(time.Second * TIME_DURATION))
 	// home
 	var userController *controller.UserController
+	// var instanceController *controller.InstanceController
+	var gatewayController *controller.GatewayController
 	router.Static("/web/assets", "./web/assets")
 	router.StaticFS("/web/upload", http.Dir("/web/upload"))
 	router.LoadHTMLGlob("web/*.tmpl")
@@ -44,9 +48,37 @@ func DefinitionRoute(router *gin.Engine) {
 		auth.POST("/user/create", userController.CreateUser)
 		auth.POST("/user/update", userController.UpdateUser)
 		auth.POST("/user/delete", userController.DeleteUser)
+
+		// auth.GET("/apis", instanceController.GetAllInstances)
+		// auth.GET("/api/add", instanceController.AddInstance) //web ui
+		// auth.GET("/api/search", instanceController.SearchInstancesByKeys)
+		// auth.POST("/api/create", instanceController.CreateInstance)
+		// auth.POST("/api/update", instanceController.UpdateInstance)
+		// auth.POST("/api/delete", instanceController.DeleteInstance)
+
+		auth.GET("/:module", func(c *gin.Context) {
+			method, _ := c.GetQuery("module")
+			log.Println("okk", method)
+			c.Redirect(http.StatusMovedPermanently, INTERNAL_SERVER+method)
+		})
+		auth.GET("/:module/add", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, INTERNAL_SERVER)
+		})
+		auth.GET("/:module/search", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, INTERNAL_SERVER)
+		})
+		auth.POST("/:module/create", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, INTERNAL_SERVER)
+		})
+		auth.POST("/:module/update", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, INTERNAL_SERVER)
+		})
+		auth.POST("/:module/delete", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, INTERNAL_SERVER)
+		})
 	}
+
 	// no route
-	var gatewayController *controller.GatewayController
 	router.NoRoute(gatewayController.Gateway(router))
 	// api doc
 	router.GET("/swagger/*any", ginSwagger.DisablingWrapHandler(swaggerFiles.Handler, "USE_SWAGGER"))

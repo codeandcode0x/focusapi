@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,6 +24,15 @@ func InitConfig() {
 	if err != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
+}
+
+type Foo struct {
+}
+
+// factory struct
+func StructFactory(keys map[string]string) {
+	foo := struct{ Foo }{}
+	log.Println(foo)
 }
 
 // Pagination

@@ -1,0 +1,43 @@
+{{template "header"}}
+
+<div class="container">
+
+  
+  <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+  <h1 class="display-4">添加 API</h1>
+  <p class="lead"></p>
+  </div>
+
+  <div class=" mb-3">
+    <div class=" mb-4">
+      <div class="col-12 col-md">
+       <form action="/api/create" method="post" class="form-horizontal" role="form" enctype="application/x-www-form-urlencoded">
+
+          <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">名称</label>
+            <div class="col-sm-12">
+              <input type="text" class="form-control" id="name" name="name" placeholder="请输入 API 名称">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="status" class="col-sm-2 control-label">API 是否启用</label>
+            <div class="col-sm-12">
+              <input type="text" class="form-control" id="status" name="status" placeholder="请输入 1 或 2">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-12">
+              <button type="submit" class="btn btn-sm btn-block btn-outline-primary">提 交</button>
+            </div>
+          </div>
+       </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{{template "footer"}}
+

@@ -1,0 +1,61 @@
+{{template "header"}}
+<div class="card mb-4 shadow-sm">
+    <table class="table table-bordered">
+      <caption class="col-6 offset-3">
+        <a href="/api/add" type="button" class="btn btn-sm btn-block btn-outline-primary">
+          添加 API
+        </a>
+      </caption>
+      <caption class="col-6 offset-3">
+      每页展示{{ .pages.PageSize }}条记录
+      第{{ .pages.CurrentPage }}页
+      共{{ .pages.TotalRows }}条记录
+      共{{ .pages.TotalPages }}页
+      {{ if gt .pages.CurrentPage 1 }}
+      <a href="/apis?currentpage={{ .pages.PreCurrentPage}}">上一页</a>
+      {{ end }}
+
+      {{ if lt .pages.CurrentPage .pages.TotalPages }}
+      <a href="/apis?currentpage={{ .pages.NextCurrentPage }}">下一页</a>
+      {{ end }}
+      </caption>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>名称</th>
+          <th>API 开启状态 </th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{range $i, $api := .apis}}
+        <tr>
+          <td>{{ $api.ID }}</td>
+          <td>{{ $api.Name }}</td>
+          <td>{{ $api.Status }}</td>
+          <td>
+            <table class="col-12">
+              <tr>
+                <td style="border: none;">
+                  <form action="/api/update" method="post" class="form-horizontal" role="form" enctype="application/x-www-form-urlencoded">
+                  <input type="hidden" name="id" id="id" value="{{ $api.ID }}">
+                  <input type="hidden" name="updatedata" id="updatedata" value="true">
+                  <button type="submit" class="btn btn-sm btn-block btn-outline-primary"> 更新 </button>
+                  </form>
+                </td>
+                <td style="border: none;">
+                  <form action="/api/delete" method="post" class="form-horizontal" role="form" enctype="application/x-www-form-urlencoded">
+                  <input type="hidden" name="id" id="id" value="{{ $api.ID }}">
+                  <button type="submit" class="btn btn-sm btn-block btn-outline-primary"> 删除 </button>
+                  </form>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        {{end}}
+      </tbody>
+    </table>
+</div>
+
+{{template "footer"}}
